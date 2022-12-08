@@ -8,7 +8,6 @@ class GenderTest {
 
 	@Test
 	void testGender() {
-		fail("Not yet implemented");
 		var gender = Gender.F;
 		var o  = gender.ordinal();
 		var s = gender.toString();

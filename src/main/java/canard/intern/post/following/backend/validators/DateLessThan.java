@@ -6,6 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.time.LocalDate;
+import java.util.Objects;
 
 import javax.validation.Constraint;
 import javax.validation.ConstraintValidator;
@@ -30,6 +31,11 @@ class DateLessThanValidator implements ConstraintValidator<DateLessThan, LocalDa
 
 	@Override
 	public boolean isValid(LocalDate localDate, ConstraintValidatorContext constrainValidationContext) {
+		// constraint transparent if localDate is null
+		if(Objects.isNull(localDate)) {
+			return true;
+		}
+		// localDate is not null: check custom constraint 
 		LocalDate today = LocalDate.now();
 		LocalDate date18yearsAgo = today.minusYears(18L);
 		

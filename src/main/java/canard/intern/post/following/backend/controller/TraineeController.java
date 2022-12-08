@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.server.ResponseStatusException;
 
 import canard.intern.post.following.backend.dto.TraineeDto;
 import canard.intern.post.following.backend.enums.Gender;
@@ -40,6 +41,12 @@ public class TraineeController {
 				);
 	}
 	
+	@GetMapping("/{id}")
+	public TraineeDto getById(@PathVariable("id") int id) {
+			
+		return TraineeDto.builder().id(id).lastname("bond").firstname("James").gender(Gender.M).birthdate(LocalDate.of(1945, 5, 16)).build();
+	}
+
 	/**
 	 * GET /api/trainees/{id}
 	 * @param id
@@ -64,7 +71,7 @@ public class TraineeController {
 			@PathVariable("id") int id,
 			@Valid @RequestBody TraineeDto traineeDto) {
 	if(Objects.nonNull(traineeDto.getId()) && (traineeDto.getId() != id)) {
-		throw new IllegalArgumentException();
+		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Id <?> from path does not match id <?> from body", id , traineeDto.getId()));
 	}
 	return traineeDto;
 	
